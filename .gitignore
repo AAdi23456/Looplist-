@@ -1,0 +1,40 @@
+# Node modules
+node_modules/
+
+# Build output
+.next/
+out/
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Env files
+.env
+.env.*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+
+# Dependency directories
+LoopList-fe/node_modules/
+LoopList-be/node_modules/
+
+# Build artifacts
+LoopList-fe/.next/
+LoopList-fe/out/
+LoopList-fe/dist/
+LoopList-be/dist/
+
+# Misc
+*.local
+*.log 

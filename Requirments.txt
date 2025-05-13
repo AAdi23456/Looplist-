@@ -1,0 +1,109 @@
+LoopList – Social Streak Tracker for Micro-Habits
+Scenario:
+Everyone wants to build better habits — but most habit trackers are either private and dull, or overly complex. What’s missing is a streak-first, publicly accountable, visually rewarding system to make micro-habit building fun.
+
+LoopList lets users commit to tiny recurring habits, track streaks visually, and share public commitment boards where others can cheer, clone, or compete.
+
+🎯 Objective:
+Build a fullstack app where users can:
+
+Create recurring micro-habits (aka loops)
+Track their daily progress and streaks
+Make habit boards public or private
+Explore trending habits and clone them
+React or cheer others’ public loops
+👥 User Role: user
+Only one role — users can track their own habits, browse public ones, and interact with others through reactions and cloning.
+
+🔐 Authentication & Authorization:
+Secure login/signup via email
+All habit loops and progress data are private by default
+Public boards can be explored without login, but reactions/clones require auth
+🧱 Core Functional Features:
+1. Create a Loop
+Form includes:
+
+Loop Title (e.g., “Read 10 pages”, “No sugar after 7pm”)
+Frequency: Daily / 3x per week / Weekdays / Custom
+Start Date
+Public toggle: Private, Public, Friends Only
+Optional: emoji icon or cover image
+2. Track Your Streaks
+Daily check-in: tap to mark as done
+Loop state:
+🔥 Active → if streak is ongoing
+⏸️ Broken → if a day is missed
+✅ Completed → if a loop had a time limit
+Show:
+Current streak
+Longest streak
+Completion rate
+Loop heatmap calendar (inspired by GitHub)
+3. Public Loop Boards
+Users can view others’ public loops:
+“Cheer” with an emoji reaction
+“Clone this loop” to try it themselves
+See how many others are doing it
+Board shows:
+Loop title
+Creator
+Total followers
+Community success rate (aggregate data)
+4. My Loop Dashboard
+Overview of all your loops:
+Tabs: Active, Paused, Completed
+Streak counter for each
+Daily checklist
+Filter by frequency or tag
+5. Explore Section
+Filter trending loops by:
+Most cloned
+Highest streak holders
+Categories: Health, Focus, Discipline, Fun
+“Loop of the Day” feature with banner-style highlight
+6. Clone + Remix
+Clicking “Clone” adds the loop to your dashboard
+You can rename, change emoji, adjust frequency before starting
+Original creator is credited: “Inspired by [user]”
+7. UI/UX Must-Haves
+Loop cards with animated streak meters
+Visual streak heatmaps
+Gentle nudge for missed check-ins (“Let’s get back on track!”)
+Mobile-first layout with swipe/tap interactions
+🧪 Additional Notes:
+Streak logic must be time-aware (no skipping days)
+Reacting to loops is limited to once per day per loop
+Private loops are fully hidden unless toggled public
+Bonus: implement soft social leaderboard for mutual follows
+
+
+rules--
+use next.js for frontend
+strictly follow the requirments.txt and do not skip anything written in requirments.txt
+
+
+
+Before proceeding with any changes, please ensure the following steps are followed:
+
+1. **Revert any previously incorrect implementations** to maintain codebase integrity.
+
+2. **Standardize Data Fetching via Services**:
+   - For example, in the Dashboard module, use the `dashboardService` to fetch data.
+   - Define a function like:
+
+     ```javascript
+     getDashboardData(someParam) {
+       // Call the backend API (to be implemented later) call the relevent API and comment that later it will get uncommented when API will be implemented
+       // For now, return some dummy/mock data
+     }
+     ```
+
+   - Always call this function from the component (e.g., Dashboard component) to retrieve data.
+
+3. **Maintain Consistency Across Modules**:
+   - Apply this approach uniformly across all modules in the project.
+   - This ensures better separation of concerns, easier testing, and maintainable code.
+
+✅ This pattern promotes a clean architecture and facilitates scalability.
+
+🔁 Consistency is key. Ensure every module adheres to this structure.
