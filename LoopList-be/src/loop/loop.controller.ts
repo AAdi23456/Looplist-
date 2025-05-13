@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Put, Delete, Param, Query, UseGuards, Req 
 import { LoopService } from './loop.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Request } from 'express';
+import { FollowService } from '../user/follow.service';
 
 class CreateLoopDto {
   title: string;
@@ -22,7 +23,10 @@ class UpdateLoopDto {
 @UseGuards(JwtAuthGuard)
 @Controller('loops')
 export class LoopController {
-  constructor(private readonly loopService: LoopService) {}
+  constructor(
+    private readonly loopService: LoopService,
+    private readonly followService: FollowService,
+  ) {}
 
   @Post()
   async create(@Req() req: Request, @Body() dto: CreateLoopDto) {
@@ -60,5 +64,16 @@ export class LoopController {
   async checkIn(@Param('id') id: string, @Req() req: Request, @Body('date') date: string) {
     const userId = (req.user as any).userId;
     return this.loopService.checkIn(id, userId, date);
+  }
+
+  @Get('friends')
+  async getFriendsLoops(@Req() req: Request) {
+    const userId = (req.user as any).userId;
+    // Get mutual follows (friends)
+    const friends = await this.followService.getFriends(userId);
+    if (!friends.length) return [];
+    const friendIds = friends.map(f => f.id);
+    // Get all loops with visibility 'friends' by mutual follows
+    return this.loopService.getFriendsOnlyLoops(friendIds);
   }
 }

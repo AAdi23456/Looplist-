@@ -325,4 +325,16 @@ export class LoopService {
       take: 10
     });
   }
+
+  async getFriendsOnlyLoops(friendIds: string[]) {
+    if (!friendIds || !friendIds.length) return [];
+    return this.loopRepo.find({
+      where: {
+        visibility: 'friends',
+        user: { id: In(friendIds) }
+      },
+      relations: ['user'],
+      order: { createdAt: 'DESC' }
+    });
+  }
 }

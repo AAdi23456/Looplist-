@@ -132,6 +132,9 @@ export default function LoopCard({ loop, isPublic = false, onCheck, onClone, onC
             <Badge variant="outline" className="text-xs ml-2">
               {loop.followers} followers
             </Badge>
+            <Badge variant="secondary" className="text-xs ml-2">
+              Community Success: {Math.round(loop.completionRate * 100)}%
+            </Badge>
           </div>
           <div className="flex space-x-2">
             <Button 
