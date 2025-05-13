@@ -2,6 +2,8 @@
 
 import { useMemo } from 'react';
 import { Loop } from '../services/loopService';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
 
 interface StreakHeatmapProps {
   loop: Loop;
@@ -57,7 +59,7 @@ export default function StreakHeatmap({ loop, months = 3 }: StreakHeatmapProps) 
     
     // Future dates are lighter gray
     if (isFuture) {
-      return 'bg-gray-100 dark:bg-gray-800';
+      return 'bg-slate-100 dark:bg-slate-800';
     }
     
     // Check if we have progress data for this date
@@ -72,68 +74,75 @@ export default function StreakHeatmap({ loop, months = 3 }: StreakHeatmapProps) 
     
     // Past days with no data get a light gray
     return isToday 
-      ? 'bg-gray-200 dark:bg-gray-700 border border-dashed border-gray-400' 
-      : 'bg-gray-200 dark:bg-gray-700';
+      ? 'bg-slate-200 dark:bg-slate-700 border border-dashed border-slate-400' 
+      : 'bg-slate-200 dark:bg-slate-700';
   };
   
   return (
-    <div className="mb-6">
-      <h3 className="text-sm font-medium mb-2">Streak Heatmap</h3>
+    <Card className="mb-6">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg">Streak Heatmap</CardTitle>
+      </CardHeader>
       
-      <div className="overflow-x-auto">
-        <div className="min-w-max">
-          {/* Month labels */}
-          <div className="flex mb-1">
-            {Array.from({ length: months }).map((_, index) => {
-              const date = new Date();
-              date.setMonth(date.getMonth() - (months - 1 - index));
-              return (
-                <div key={index} className="flex-1 text-xs text-gray-600 dark:text-gray-400">
-                  {date.toLocaleString('default', { month: 'short' })}
+      <CardContent>
+        <div className="overflow-x-auto">
+          <div className="min-w-max">
+            {/* Month labels */}
+            <div className="flex mb-1">
+              {Array.from({ length: months }).map((_, index) => {
+                const date = new Date();
+                date.setMonth(date.getMonth() - (months - 1 - index));
+                return (
+                  <div key={index} className="flex-1 text-xs text-slate-600 dark:text-slate-400">
+                    {date.toLocaleString('default', { month: 'short' })}
+                  </div>
+                );
+              })}
+            </div>
+            
+            {/* Day grid */}
+            <div className="flex flex-col gap-1">
+              {weeks.map((week, weekIndex) => (
+                <div key={weekIndex} className="flex gap-1">
+                  {week.map((date) => {
+                    const dateString = formatDate(date);
+                    return (
+                      <div 
+                        key={dateString}
+                        className={`h-4 w-4 rounded-sm ${getCellColor(date)}`}
+                        title={`${date.toLocaleDateString()}: ${
+                          dateString in loop.dailyProgress 
+                            ? loop.dailyProgress[dateString] ? 'Completed' : 'Not Completed'
+                            : 'No data'
+                        }`}
+                      />
+                    );
+                  })}
                 </div>
-              );
-            })}
-          </div>
-          
-          {/* Day grid */}
-          <div className="flex flex-col gap-1">
-            {weeks.map((week, weekIndex) => (
-              <div key={weekIndex} className="flex gap-1">
-                {week.map((date) => {
-                  const dateString = formatDate(date);
-                  return (
-                    <div 
-                      key={dateString}
-                      className={`h-4 w-4 rounded-sm ${getCellColor(date)}`}
-                      title={`${date.toLocaleDateString()}: ${
-                        dateString in loop.dailyProgress 
-                          ? loop.dailyProgress[dateString] ? 'Completed' : 'Not Completed'
-                          : 'No data'
-                      }`}
-                    />
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-          
-          {/* Legend */}
-          <div className="flex items-center gap-4 mt-3">
-            <span className="flex items-center gap-1">
-              <div className="h-3 w-3 bg-green-500 dark:bg-green-600 rounded-sm"></div>
-              <span className="text-xs text-gray-600 dark:text-gray-400">Completed</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="h-3 w-3 bg-red-300 dark:bg-red-900 rounded-sm"></div>
-              <span className="text-xs text-gray-600 dark:text-gray-400">Missed</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="h-3 w-3 bg-gray-200 dark:bg-gray-700 rounded-sm"></div>
-              <span className="text-xs text-gray-600 dark:text-gray-400">No data</span>
-            </span>
+              ))}
+            </div>
+            
+            {/* Legend */}
+            <div className="flex items-center gap-4 mt-3">
+              <span className="flex items-center gap-1">
+                <div className="h-3 w-3 bg-green-500 dark:bg-green-600 rounded-sm"></div>
+                <span className="text-xs text-slate-600 dark:text-slate-400">Completed</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <div className="h-3 w-3 bg-red-300 dark:bg-red-900 rounded-sm"></div>
+                <span className="text-xs text-slate-600 dark:text-slate-400">Missed</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <div className="h-3 w-3 bg-slate-200 dark:bg-slate-700 rounded-sm"></div>
+                <span className="text-xs text-slate-600 dark:text-slate-400">No data</span>
+              </span>
+              <Badge variant="outline" className="ml-auto text-xs">
+                {loop.currentStreak} day streak
+              </Badge>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 } 
